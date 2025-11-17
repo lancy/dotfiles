@@ -7,6 +7,8 @@
 [core]
     excludesfile = ~/.gitignore.global
 [alias]
+	st = status
+	co checkout
     l = log --decorate --graph
     la = log --decorate --graph --all
     ba = branch -a
