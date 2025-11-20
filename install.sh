@@ -38,17 +38,32 @@ then
 fi
 EOF
 
-echo "Installing claude code..."
-if command -v pnpm >/dev/null 2>&1; then
+setup_pnpm() {
+    if [[ -n "$PNPM_ENV_INITIALIZED" ]]; then
+        return
+    fi
+
     SHELL=zsh pnpm setup
 
-    export PNPM_HOME="$HOME/.local/share/pnpm"
+    export PNPM_HOME="${PNPM_HOME:-$HOME/.local/share/pnpm}"
     case ":$PATH:" in
       *":$PNPM_HOME:"*) ;;
       *) export PATH="$PNPM_HOME:$PATH" ;;
     esac
 
+    PNPM_ENV_INITIALIZED=1
+}
+
+echo "Installing claude code..."
+if command -v pnpm >/dev/null 2>&1; then
+    setup_pnpm
     pnpm install -g @anthropic-ai/claude-code
+fi
+
+echo "Installing codex..."
+if command -v pnpm >/dev/null 2>&1; then
+    setup_pnpm
+    pnpm install -g @openai/codex
 fi
 
 if command -v vim >/dev/null 2>&1; then
