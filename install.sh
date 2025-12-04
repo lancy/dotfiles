@@ -66,6 +66,12 @@ if command -v pnpm >/dev/null 2>&1; then
     pnpm install -g @openai/codex
 fi
 
+echo "Installing gemini-cli..."
+if command -v pnpm >/dev/null 2>&1; then
+    setup_pnpm
+    pnpm install -g @google/gemini-cli
+fi
+
 if command -v vim >/dev/null 2>&1; then
     echo "Installing vim configuration..."
     curl https://raw.githubusercontent.com/e7h4n/e7h4n-vim/master/bootstrap.sh -L -o - | sh
