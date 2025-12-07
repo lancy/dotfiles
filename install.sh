@@ -18,6 +18,14 @@ cp -a "$dotfiles_dir/.config/zsh" "$HOME/.config/zsh"
 
 export XDG_CONFIG_HOME="$HOME/.config/"
 
+# Install tmux
+echo "Installing tmux..."
+if command -v apt-get >/dev/null 2>&1; then
+    sudo apt-get update && sudo apt-get install -y tmux
+elif command -v apk >/dev/null 2>&1; then
+    sudo apk add tmux
+fi
+
 # Set ZDOTDIR if zsh config directory exists
 if [[ -d "$XDG_CONFIG_HOME/zsh" ]]; then
     export ZDOTDIR="$XDG_CONFIG_HOME/zsh/"
