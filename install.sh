@@ -80,6 +80,27 @@ if command -v pnpm >/dev/null 2>&1; then
     pnpm install -g @google/gemini-cli
 fi
 
+echo "Installing Axiom CLI..."
+if ! command -v axiom >/dev/null 2>&1; then
+    AXIOM_VERSION="0.14.7"
+    ARCH=$(uname -m)
+    case "$ARCH" in
+        x86_64) AXIOM_ARCH="amd64" ;;
+        aarch64|arm64) AXIOM_ARCH="arm64" ;;
+        *) echo "Unsupported architecture: $ARCH"; exit 1 ;;
+    esac
+
+    AXIOM_URL="https://github.com/axiomhq/cli/releases/download/v${AXIOM_VERSION}/axiom_${AXIOM_VERSION}_linux_${AXIOM_ARCH}.tar.gz"
+
+    curl -L "$AXIOM_URL" -o /tmp/axiom.tar.gz
+    tar -xzf /tmp/axiom.tar.gz -C /tmp
+    mv /tmp/axiom ~/.local/bin/axiom
+    chmod +x ~/.local/bin/axiom
+    rm /tmp/axiom.tar.gz
+
+    echo "Axiom CLI ${AXIOM_VERSION} installed successfully"
+fi
+
 if command -v vim >/dev/null 2>&1; then
     echo "Installing vim configuration..."
     curl https://raw.githubusercontent.com/e7h4n/e7h4n-vim/master/bootstrap.sh -L -o - | sh
