@@ -94,9 +94,9 @@ if ! command -v axiom >/dev/null 2>&1; then
 
     curl -L "$AXIOM_URL" -o /tmp/axiom.tar.gz
     tar -xzf /tmp/axiom.tar.gz -C /tmp
-    mv /tmp/axiom ~/.local/bin/axiom
+    mv /tmp/axiom_${AXIOM_VERSION}_linux_${AXIOM_ARCH}/axiom ~/.local/bin/axiom
     chmod +x ~/.local/bin/axiom
-    rm /tmp/axiom.tar.gz
+    rm -rf /tmp/axiom.tar.gz /tmp/axiom_${AXIOM_VERSION}_linux_${AXIOM_ARCH}
 
     echo "Axiom CLI ${AXIOM_VERSION} installed successfully"
 fi
