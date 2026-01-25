@@ -80,11 +80,6 @@ if command -v pnpm >/dev/null 2>&1; then
     pnpm install -g @google/gemini-cli
 fi
 
-echo "Installing TypeScript Language Server..."
-if command -v npm >/dev/null 2>&1; then
-    npm install -g typescript-language-server typescript
-fi
-
 echo "Installing Axiom CLI..."
 if ! command -v axiom >/dev/null 2>&1; then
     AXIOM_VERSION="0.14.7"
