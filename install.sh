@@ -18,14 +18,6 @@ cp -a "$dotfiles_dir/.config/zsh" "$HOME/.config/zsh"
 
 export XDG_CONFIG_HOME="$HOME/.config/"
 
-# Install tmux
-echo "Installing tmux..."
-if command -v apt-get >/dev/null 2>&1; then
-    sudo apt-get update && sudo apt-get install -y tmux
-elif command -v apk >/dev/null 2>&1; then
-    sudo apk add tmux
-fi
-
 # Set ZDOTDIR if zsh config directory exists
 if [[ -d "$XDG_CONFIG_HOME/zsh" ]]; then
     export ZDOTDIR="$XDG_CONFIG_HOME/zsh/"
@@ -66,18 +58,6 @@ echo "Installing claude code..."
 if command -v pnpm >/dev/null 2>&1; then
     setup_pnpm
     pnpm install -g @anthropic-ai/claude-code
-fi
-
-echo "Installing codex..."
-if command -v pnpm >/dev/null 2>&1; then
-    setup_pnpm
-    pnpm install -g @openai/codex
-fi
-
-echo "Installing gemini-cli..."
-if command -v pnpm >/dev/null 2>&1; then
-    setup_pnpm
-    pnpm install -g @google/gemini-cli
 fi
 
 echo "Installing Axiom CLI..."
