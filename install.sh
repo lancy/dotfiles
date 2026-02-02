@@ -38,27 +38,14 @@ then
 fi
 EOF
 
-setup_pnpm() {
-    if [[ -n "$PNPM_ENV_INITIALIZED" ]]; then
-        return
-    fi
-
-    SHELL=zsh pnpm setup
-
-    export PNPM_HOME="${PNPM_HOME:-$HOME/.local/share/pnpm}"
-    case ":$PATH:" in
-      *":$PNPM_HOME:"*) ;;
-      *) export PATH="$PNPM_HOME:$PATH" ;;
-    esac
-
-    PNPM_ENV_INITIALIZED=1
-}
-
 echo "Installing claude code..."
-if command -v pnpm >/dev/null 2>&1; then
-    setup_pnpm
-    pnpm install -g @anthropic-ai/claude-code
-fi
+curl -fsSL https://claude.ai/install.sh | \
+  sed -e 's|DOWNLOAD_DIR="\$HOME/.claude/downloads"|DOWNLOAD_DIR="$HOME/.cache/claude"|' \
+      -e 's|"\$binary_path" install.*|"\$binary_path" install \$version|' \
+      -e '/rm -f "\$binary_path"/d' \
+      -e '/version=\$(download_file.*latest")/a echo claude code version: $version' \
+      -e 's|if ! download_file|if [ -f "\$binary_path" ]; then echo "Using cached binary"; elif ! download_file|' | \
+  bash
 
 echo "Installing Axiom CLI..."
 if ! command -v axiom >/dev/null 2>&1; then
