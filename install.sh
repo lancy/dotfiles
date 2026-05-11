@@ -81,6 +81,21 @@ if ! command -v axiom >/dev/null 2>&1; then
     echo "Axiom CLI ${AXIOM_VERSION} installed successfully"
 fi
 
+# Install codex-switch
+if !command -v codex-switch &> /dev/null; then
+    echo "Installing codex-switch..."
+    ARCH=$(uname -m)
+    case $ARCH in
+        x86_64) CODEX_SWITCH_ASSET="codex-switch-x86_64-unknown-linux-musl" ;;
+        aarch64|arm64) CODEX_SWITCH_ASSET="codex-switch-aarch64-unknown-linux-musl" ;;
+        *) echo "Unsupported architecture for codex-switch:$ARCH"; exit 1 ;;
+    esac
+    CODEX_SWITCH_TMP=$(mktemp)
+    curl -fsSL -o "$CODEX_SWITCH_TMP" "https://github.com/seven332/codex-switch/releases/latest/download/${CODEX_SWITCH_ASSET}"
+    sudo install -m 0755 "$CODEX_SWITCH_TMP" /usr/local/bin/codex-switch
+    rm -f "$CODEX_SWITCH_TMP"
+fi
+
 if command -v vim >/dev/null 2>&1; then
     echo "Installing vim configuration..."
     curl https://raw.githubusercontent.com/e7h4n/e7h4n-vim/master/bootstrap.sh -L -o - | sh
